@@ -1,0 +1,42 @@
+services:
+
+  mysql:
+    image: mysql:8.4
+    container_name: cart-mysql
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: cart_db
+      MYSQL_USER: cart_user
+      MYSQL_PASSWORD: cart_password
+
+    ports:
+      - "3308:3306"
+
+    volumes:
+      - cart_mysql_data:/var/lib/mysql
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  cart-service:
+    build: .
+    container_name: cart-service
+    restart: always
+
+    ports:
+      - "8001:8000"
+
+    env_file:
+      - .env
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  cart_mysql_data:
