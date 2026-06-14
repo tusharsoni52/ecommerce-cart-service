@@ -23,5 +23,9 @@ class Settings:
             f"/{self.MYSQL_DATABASE}"
         )
 
+    PRODUCT_SERVICE_URL = os.getenv( "PRODUCT_SERVICE_URL", "http://localhost:8000" )
+
+    ORDER_SERVICE_URL = os.getenv( "ORDER_SERVICE_URL", "http://localhost:8002" )
+
 
 settings = Settings()

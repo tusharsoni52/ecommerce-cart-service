@@ -7,11 +7,14 @@ from app.db.database import get_db
 from app.schemas.cart import CartItemCreate, CartItemResponse
 from app.services.cart_service import (
     add_to_cart,
-    get_cart_by_customer
+    get_cart_by_customer,
+    checkout
 )
 
-router = APIRouter(tags=["Cart"])
-
+router = APIRouter(
+    prefix="/api/v1",
+    tags=["Cart v1"]
+)
 
 @router.post(
     "/cart",
@@ -33,3 +36,11 @@ def get_customer_cart(
         db: Session = Depends(get_db)
 ):
     return get_cart_by_customer(db, customer_id)
+
+
+@router.post("/checkout/{customer_id}")
+def checkout_cart(
+        customer_id: int,
+        db: Session = Depends(get_db)
+):
+    return checkout(db, customer_id)

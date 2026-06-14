@@ -40,3 +40,8 @@ services:
 
 volumes:
   cart_mysql_data:
+
+networks:
+  default:
+    external: true
+    name: ecommerce-network
